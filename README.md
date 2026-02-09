@@ -4,14 +4,23 @@
 
 <br />
 
+<div align="center">
+
 # 🛢️ MOC Studio
 
 [![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?logo=vite)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-Private-red.svg)]()
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?logo=vercel)](https://moc-studio-dusky.vercel.app/)
 
 **The Ultimate Oil & Gas Management of Change (MOC) Ecosystem with real-time telemetry, risk analysis, and AI technical support.**
+
+[View Live Demo](https://moc-studio-dusky.vercel.app/) • [Documentation](./ABOUT.md) • [Report Issue](https://github.com/celloweb-ai/MOC_Studio/issues)
+
+</div>
+
+---
 
 MOC Studio is a comprehensive web application designed to manage and track changes in oil and gas operations. Built with modern technologies, it provides real-time monitoring, risk assessment, asset management, and AI-powered technical assistance for operational excellence in offshore and onshore facilities.
 
@@ -38,6 +47,22 @@ MOC Studio is a comprehensive web application designed to manage and track chang
 - **🔍 Advanced Search** - Full-text search across all modules
 - **📈 Data Visualization** - Interactive charts powered by Recharts
 - **⚡ Emergency Wizard** - Quick-response workflow for urgent MOC scenarios
+
+---
+
+## 🌐 Live Demo
+
+**Experience MOC Studio in action:** [https://moc-studio-dusky.vercel.app/](https://moc-studio-dusky.vercel.app/)
+
+The live demo is deployed on Vercel and showcases all features including:
+- Interactive dashboard with real-time metrics
+- Complete MOC workflow management
+- AI-powered technical assistant
+- Risk assessment matrix
+- Facility mapping with geolocation
+- Asset inventory system
+
+> **Note:** The demo uses simulated data for demonstration purposes.
 
 ---
 
@@ -90,6 +115,12 @@ The production-ready files will be generated in the `dist/` directory.
 npm run preview
 ```
 
+### Deploy to Vercel
+
+The easiest way to deploy MOC Studio is using [Vercel](https://vercel.com):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/celloweb-ai/MOC_Studio)
+
 ---
 
 ## 🏗️ Project Structure
@@ -110,6 +141,7 @@ MOC_Studio/
 │   └── UserManagement.tsx
 ├── context/            # React Context providers
 ├── services/           # API and service integrations
+├── images/             # Static images and assets
 ├── App.tsx             # Main application component
 ├── constants.tsx       # Application constants and translations
 ├── types.ts            # TypeScript type definitions
@@ -139,6 +171,9 @@ MOC_Studio/
 
 ### AI Integration
 - **@google/genai 1.40.0** - Google Gemini AI integration for technical assistance
+
+### Deployment
+- **Vercel** - Production hosting and continuous deployment
 
 ---
 
@@ -239,7 +274,7 @@ GitHub: [@celloweb-ai](https://github.com/celloweb-ai)
 For support, documentation, or feature requests:
 - Use the built-in Help Center within the application
 - Contact the development team
-- Review the documentation in the `/docs` directory
+- Review the [complete documentation](./ABOUT.md)
 
 ---
 
@@ -250,6 +285,7 @@ For support, documentation, or feature requests:
   - Dashboard and analytics
   - AI integration
   - Multilingual support
+  - Vercel deployment
 
 ---
 
@@ -264,8 +300,10 @@ For support, documentation, or feature requests:
 
 ## 🔗 Links
 
-- **AI Studio App**: https://ai.studio/apps/drive/1R0kX6GDYTGZUjY46-D2z_bPkJITIwmvM
-- **Repository**: https://github.com/celloweb-ai/MOC_Studio
+- **🌐 Live Application**: [https://moc-studio-dusky.vercel.app/](https://moc-studio-dusky.vercel.app/)
+- **📚 AI Studio App**: [https://ai.studio/apps/drive/1R0kX6GDYTGZUjY46-D2z_bPkJITIwmvM](https://ai.studio/apps/drive/1R0kX6GDYTGZUjY46-D2z_bPkJITIwmvM)
+- **💻 Repository**: [https://github.com/celloweb-ai/MOC_Studio](https://github.com/celloweb-ai/MOC_Studio)
+- **📖 Documentation**: [ABOUT.md](./ABOUT.md)
 
 ---
 
