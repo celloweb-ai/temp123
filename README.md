@@ -228,7 +228,7 @@ This project is private and proprietary. All rights reserved.
 
 ## 👨‍💻 Author
 
-**Marcelo Cello**  
+**Marcus Vasconcellos**  
 Celloweb AI  
 GitHub: [@celloweb-ai](https://github.com/celloweb-ai)
 
