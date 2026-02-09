@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="./images/MOC_Studio.jpg" alt="MOC Studio Banner" width="100%" />
+</div>
+
+<br />
+
 # 🛢️ MOC Studio
 
 [![React](https://img.shields.io/badge/React-19.2.4-61DAFB?logo=react)](https://reactjs.org/)
