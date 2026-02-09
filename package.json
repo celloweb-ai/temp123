@@ -11,7 +11,9 @@
   "dependencies": {
     "@google/genai": "1.40.0",
     "@types/leaflet": "^1.9.21",
+    "@vitejs/plugin-react-swc": "^4.2.3",
     "leaflet": "1.9.4",
+    "lovable-tagger": "^1.1.13",
     "lucide-react": "0.475.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
