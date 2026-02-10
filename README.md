@@ -52,7 +52,7 @@ MOC Studio is a comprehensive web application designed to manage and track chang
 
 ## 🌐 Live Demo
 
-**Experience MOC Studio in action:** [https://moc-studio-kappa.vercel.app/](https://moc-studio-dusky.vercel.app/)
+**Experience MOC Studio in action:** [https://moc-studio-kappa.vercel.app/]
 
 The live demo is deployed on Vercel and showcases all features including:
 - Interactive dashboard with real-time metrics
