@@ -9,7 +9,7 @@ import {
   CheckCircle2, Info, Tag, Layers, Calendar, HardDrive, ShieldCheck,
   Zap, Settings2, BarChart3, Clock, ArrowUpRight, Factory, AlertTriangle,
   Stethoscope, Microscope, Settings, Ruler, Hammer, FileCheck, ClipboardList,
-  Waves, Radio, Binary, Loader2
+  Waves, Radio, Binary, Loader2, HeartPulse
 } from 'lucide-react';
 import { ResponsiveContainer, Tooltip, AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Asset, Attachment } from '../types';
@@ -53,10 +53,37 @@ const AssetInventory: React.FC = () => {
       if (!selectedAsset) return;
       const time = new Date().toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
       setTelemetry(prev => [...prev, { time, temp: (selectedAsset.parameters.temperature || 0) + (Math.random() - 0.5) * 5, press: (selectedAsset.parameters.pressure || 0) + (Math.random() - 0.5) * 10 }].slice(-20));
-      setHealthIndex(prev => parseFloat(Math.min(100, Math.max(0, prev + (Math.random() - 0.5) * 0.2)).toFixed(1)));
+      setHealthIndex(prev => {
+         const newVal = prev + (Math.random() - 0.5) * 0.2;
+         return parseFloat(Math.min(100, Math.max(45, newVal)).toFixed(1));
+      });
     }, 2000);
     return () => clearInterval(interval);
   }, [selectedAsset?.tag]);
+
+  const getHealthMeta = (index: number) => {
+    if (index >= 90) return { 
+      color: '#10b981', 
+      label: language === 'pt-BR' ? 'ÓTIMO' : 'OPTIMAL',
+      textColor: 'text-emerald-500',
+      bgColor: 'bg-emerald-500/10',
+      icon: <CheckCircle2 size={12} />
+    };
+    if (index >= 75) return { 
+      color: '#f59e0b', 
+      label: language === 'pt-BR' ? 'ESTÁVEL' : 'STABLE',
+      textColor: 'text-amber-500',
+      bgColor: 'bg-amber-500/10',
+      icon: <Activity size={12} />
+    };
+    return { 
+      color: '#ef4444', 
+      label: language === 'pt-BR' ? 'CRÍTICO' : 'CRITICAL',
+      textColor: 'text-rose-500',
+      bgColor: 'bg-rose-500/10',
+      icon: <AlertTriangle size={12} />
+    };
+  };
 
   const filteredAssets = assets.filter(a => 
     a.tag.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -119,6 +146,7 @@ const AssetInventory: React.FC = () => {
   const currentTemp = telemetry.length > 0 ? telemetry[telemetry.length - 1].temp : selectedAsset?.parameters.temperature || 0;
   const currentPress = telemetry.length > 0 ? telemetry[telemetry.length - 1].press : selectedAsset?.parameters.pressure || 0;
   const currentFlow = selectedAsset?.parameters.flow || 0;
+  const healthMeta = getHealthMeta(healthIndex);
 
   return (
     <div className="h-full flex flex-col space-y-6 animate-in fade-in duration-500 overflow-hidden">
@@ -174,15 +202,35 @@ const AssetInventory: React.FC = () => {
           {selectedAsset ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                <div className="md:col-span-4 glass-panel p-6 rounded-[2.5rem] flex items-center gap-6">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center relative bg-slate-100 dark:bg-black/20 p-1 shrink-0">
-                    <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(${healthIndex > 90 ? '#10b981' : '#f59e0b'} ${healthIndex}%, rgba(0,0,0,0.1) 0)` }}></div>
-                    <div className="absolute inset-[4px] rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center shadow-lg"><span className="text-xl font-black text-slate-900 dark:text-white">{healthIndex}%</span></div>
+                <div className="md:col-span-4 glass-panel p-6 rounded-[2.5rem] flex items-center gap-6 relative overflow-hidden group">
+                  {/* Decorative background pulse for high health */}
+                  {healthIndex >= 90 && (
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl -translate-y-12 translate-x-12 group-hover:bg-emerald-500/10 transition-all duration-700"></div>
+                  )}
+                  
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center relative bg-slate-100 dark:bg-black/20 p-1.5 shrink-0 shadow-inner">
+                    <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(${healthMeta.color} ${healthIndex}%, rgba(0,0,0,0.08) 0)` }}></div>
+                    <div className="absolute inset-[6px] rounded-full bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center shadow-lg border border-white/5">
+                      <span className="text-[9px] font-black text-slate-400 leading-none uppercase mb-0.5">Asset</span>
+                      <span className="text-xl font-black text-slate-900 dark:text-white leading-none">{healthIndex}%</span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">{t.healthIndex}</h4>
-                    <p className="text-xs font-black" style={{ color: healthIndex > 90 ? '#10b981' : '#f59e0b' }}>{healthIndex > 90 ? (language === 'pt-BR' ? 'ÓTIMO' : 'OPTIMAL') : (language === 'pt-BR' ? 'ESTÁVEL' : 'STABLE')}</p>
-                    <span className="text-[8px] font-black text-slate-400 uppercase mt-2 block">{t.liveSync}</span>
+                  
+                  <div className="flex-1 space-y-2 relative z-10">
+                    <div>
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1 leading-none">{t.healthIndex}</h4>
+                      <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-transparent ${healthMeta.bgColor} ${healthMeta.textColor} transition-all duration-500`}>
+                        {healthMeta.icon}
+                        <span className="text-[11px] font-black tracking-widest uppercase">{healthMeta.label}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 pt-1">
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-1.5 h-1.5 rounded-full ${healthIndex >= 90 ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`}></div>
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t.liveSync}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -194,11 +242,11 @@ const AssetInventory: React.FC = () => {
                       <div className="h-1 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-orange-500 transition-all duration-500" style={{ width: `${Math.min(100, (currentTemp/150)*100)}%` }}></div></div>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex justify-between text-[9px] font-black uppercase tracking-tight"><span className="text-slate-500">{t.pressure}</span> <span className="text-slate-900 dark:text-white font-mono">{currentPress.toFixed(1)} Bar</span></div>
+                      <div className="flex justify-between text-[9px] font-black uppercase tracking-tight"><span className="text-slate-500">{t.pressure}</span> <span className="text-slate-900 dark:text-white font-mono">{currentPress.toFixed(1) === '0.0' ? '-' : currentPress.toFixed(1)} Bar</span></div>
                       <div className="h-1 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${Math.min(100, (currentPress/250)*100)}%` }}></div></div>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex justify-between text-[9px] font-black uppercase tracking-tight"><span className="text-slate-500">{t.flow}</span> <span className="text-slate-900 dark:text-white font-mono">{currentFlow.toFixed(0)} m³/h</span></div>
+                      <div className="flex justify-between text-[9px] font-black uppercase tracking-tight"><span className="text-slate-500">{t.flow}</span> <span className="text-slate-900 dark:text-white font-mono">{currentFlow === 0 ? '-' : currentFlow.toFixed(0)} m³/h</span></div>
                       <div className="h-1 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${Math.min(100, (currentFlow/2000)*100)}%` }}></div></div>
                     </div>
                   </div>

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
@@ -11,10 +12,25 @@ import {
 import { useApp } from '../context/AppContext';
 import { Facility } from '../types';
 
-// Custom Marker Generator
+// Custom Marker Generator with status-specific visual indicators
 const createStatusIcon = (status: string, isSelected: boolean) => {
-  const color = status === 'Online' ? '#10b981' : status === 'Offline' ? '#ef4444' : '#f59e0b';
-  const showPulse = status === 'Online';
+  let color = '#10b981'; // Default: Online (Green)
+  let pulseClass = '';
+  let pulseDuration = '2s';
+
+  if (status === 'Offline') {
+    color = '#ef4444'; // Red
+    pulseClass = ''; // No pulse for offline
+  } else if (status === 'Maintenance') {
+    color = '#f59e0b'; // Amber/Orange
+    pulseClass = 'marker-pulse-ring';
+    pulseDuration = '4s'; // Slower "breathing" pulse for maintenance
+  } else {
+    // Online
+    color = '#10b981'; // Green
+    pulseClass = 'marker-pulse-ring';
+    pulseDuration = '2s'; // Standard active pulse for online
+  }
   
   return L.divIcon({
     className: 'custom-marker',
@@ -25,8 +41,8 @@ const createStatusIcon = (status: string, isSelected: boolean) => {
         
         <!-- Status Indicator Container -->
         <div class="relative" style="width: 12px; height: 12px;">
-          <!-- Pulse Ring (Online Only) -->
-          ${showPulse ? `<div class="marker-pulse-ring" style="background-color: ${color}"></div>` : ''}
+          <!-- Status Pulse (Hidden for Offline) -->
+          ${pulseClass ? `<div class="${pulseClass}" style="background-color: ${color}; animation-duration: ${pulseDuration}"></div>` : ''}
           
           <!-- Core Dot -->
           <div class="relative w-full h-full rounded-full shadow-[0_0_12px_${color}]" style="background-color: ${color}; border: 1.5px solid rgba(255,255,255,0.4);"></div>
@@ -136,7 +152,7 @@ const FacilityMap: React.FC = () => {
         </div>
         <button 
           onClick={handleOpenAdd}
-          className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl flex items-center gap-2 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-blue-500/20 active:scale-95"
+          className="bg-blue-600 hover:bg-blue-50 text-white px-8 py-4 rounded-2xl flex items-center gap-2 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-blue-500/20 active:scale-95"
         >
           <Plus size={20} strokeWidth={3} />
           <span>Provision New Hub</span>
